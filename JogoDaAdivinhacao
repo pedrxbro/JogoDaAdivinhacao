@@ -1,0 +1,100 @@
+#include <iostream>
+#include <ctime>
+#include <cstdlib>
+#include <ctime>      
+using namespace std;
+
+int main() {
+    
+    string nome;
+    int tentativa_atual = 1;
+    int total_tentativas = 5;
+    int pontuacao = total_tentativas;
+    int n_partidas = 0;
+    int pontos_acumulativos = 0;
+    
+    cout << "Qual o seu nome? " << endl;
+    cin >> nome;
+    
+    system ("clear");
+    
+    cout << "**************************************************" << endl;
+    cout << "Bem-vindo ao jogo de Adivinhação, " << nome << "!" << endl;
+    cout << "**************************************************" << endl;
+    
+    cout << "REGRAS DO JOGO! " << endl;
+    cout << "***************"  << endl;
+    cout << "Com o total de " << total_tentativas << " chances. Você precisa adivinhar um número de 0 a 100. " << endl;
+    cout << "A pontuação é de acordo com o numero de tentativas, nesse caso, o jogo vai até " << total_tentativas << " pontos." << endl;
+    cout << "Toda vez que você disperdiça uma chance, perde um ponto. " << endl;
+    
+    string jogador_quer_jogar = "Sim";
+    
+
+    while (jogador_quer_jogar == "Sim"){ //loop para reiniciar o jogo quando o usuário quiser.
+        srand(time(nullptr));
+        int numero_secreto = rand() % 100;
+        tentativa_atual = 1;
+        pontuacao = total_tentativas;
+        
+        while (tentativa_atual <= total_tentativas){ //loop pra contar quantas tentativas o usuário ainda tem.
+            
+            
+            int chute;
+            cout << "Tentativa número " << tentativa_atual << endl;
+            bool numero_valido = false;
+            while(numero_valido == false){ //loop pra verificar se o número inserido é valido, seguindo as regras. 
+                cout << "Digite o seu número: ";
+                cin >> chute;
+                if(chute < 0 || chute > 100){
+                    cout << "Digite um número entre 0 e 100!" << endl;
+                }else{
+                    numero_valido = true;
+                }
+            }
+            if(numero_secreto == chute) {
+                
+                cout << "Você acertou!" <<" o número secreto era mesmo " << numero_secreto << "." << endl;
+                cout << "Você fez o total de: " << pontuacao << " pontos." << endl;
+                
+                n_partidas++; //como o usuário acertou, contar uma partida.
+                pontos_acumulativos += pontuacao; //com base nas pontuações anteriores, vai acumulando pra printar no final.
+                pontuacao = total_tentativas; //o usuário começa com os pontos equivalente ao número de tentativas totais.
+                
+                break;
+            }else {
+                if(chute > numero_secreto) {
+                    cout << "Você errou! O chute foi MAIOR que o número secreto." << endl;
+                    
+                    pontuacao--; //errou, perdeu pontos.
+                    
+                }else{
+                    cout << "Você errou! O chute foi MENOR que o número secreto." << endl;
+                    
+                    pontuacao--; //errou, perdeu pontos.
+                    
+                }  
+            }
+            tentativa_atual = tentativa_atual + 1; //toda vez que ele joga, o numero da tentativa atual aumenta em um.
+            
+            if (tentativa_atual > total_tentativas){
+            cout << "O número secreto era " << numero_secreto << "." << endl;
+            cout << "Você fez o total de: " << pontuacao << " pontos." << endl;
+            //se o numero de tentativas for maior que o total estipulado, o algorítimo imprime o número secreto
+            //e diz quantos pontos o usuário fez. 
+            
+            n_partidas++; //como vamos ter que contar o número de partidas que o usuário jogou, esse código conta essa partida como +1.
+            pontos_acumulativos += pontuacao;
+            }
+        }
+    cout << "Fim do jogo! Gostaria de jogar novamente? (Sim ou Não) " << endl;
+    cin >> jogador_quer_jogar; //vai armazenar a resposta do usuário, para entao rodar, ou não, o loop anterior.
+    
+    system ("clear");
+    
+    if(jogador_quer_jogar == "Não"){ //se não quiser, imprime o quantidade de partidas e os pontos.
+        cout << "Muito obrigado por jogar, " << nome << "!" << endl;
+        cout << "Você jogou " << n_partidas << " partidas. Acumulando um total de " << pontos_acumulativos << " pontos.";
+        }
+    }
+}
